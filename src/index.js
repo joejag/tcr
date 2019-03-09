@@ -68,3 +68,16 @@ const Counter = () => {
 };
 
 render(<Summary isFinished={true} passed={10} failed={1}  time={"1200"} />);
+
+var chokidar = require('chokidar')
+var debounce = require('debounce')
+
+const doSomethingBob = debounce((event, path) => { 
+	render(<Summary isFinished={true} passed={100} failed={1} time={path} />);
+}, 1)
+
+chokidar.watch('.', {ignored: /(^|[\/\\])\../, interval: 100}).on('all', (event, path) => {
+  doSomethingBob(event, path);
+});
+
+ 
