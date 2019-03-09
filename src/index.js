@@ -71,13 +71,22 @@ render(<Summary isFinished={true} passed={10} failed={1}  time={"1200"} />);
 
 var chokidar = require('chokidar')
 var debounce = require('debounce')
+var shell = require('shelljs')
 
 const doSomethingBob = debounce((event, path) => { 
-	render(<Summary isFinished={true} passed={100} failed={1} time={path} />);
+	var runCommand = shell.exec('ls2', {silent:true})
+	if (runCommand.code !== 0) {
+		render(<div>
+			<Summary isFinished={true} passed={0} failed={1000} time={path} />
+			<Text>{runCommand.stderr}</Text>
+			</div>);
+	} else {
+		render(<Summary isFinished={true} passed={10} failed={1} time={path} />);
+	}
 }, 1)
 
 chokidar.watch('.', {ignored: /(^|[\/\\])\../, interval: 100}).on('all', (event, path) => {
   doSomethingBob(event, path);
 });
 
- 
+   
