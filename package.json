@@ -5,6 +5,9 @@
   "bin": {
     "tcr": "index.js"
   },
+  "files": [
+    "/lib"
+  ],
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "chokidar": "^2.1.2",
@@ -26,8 +29,8 @@
     "prettier": "^1.15.3"
   },
   "scripts": {
-    "build": "babel src --out-dir=build",
-    "start": "node build/index.js"
+    "build": "babel src --out-dir=lib",
+    "start": "node lib/index.js"
   },
   "babel": {
     "presets": [
