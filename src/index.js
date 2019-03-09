@@ -1,92 +1,73 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types'
 import {render, Box, Text, Color} from 'ink';
-
-const Summary = ({isFinished, passed, failed, time}) => (
-	<Box flexDirection="column" marginTop={1}>
-		<Box>
-			<Box width={14}>
-				<Color bold>
-					Test Suites:
-				</Color>
-			</Box>
-
-			{failed > 0 && (
-				<Color bold red>
-					{failed} failed,{' '}
-				</Color>
-			)}
-
-			{passed > 0 && (
-				<Color bold green>
-					{passed} passed,{' '}
-				</Color>
-			)}
-
-			{passed + failed} total
-		</Box>
-
-		<Box>
-			<Box width={14}>
-				<Color bold>
-					Time:
-				</Color>
-			</Box>
-
-			{time}
-		</Box>
-
-		{isFinished && (
-			<Box>
-				<Color dim>
-					Ran all test suites.
-				</Color>
-			</Box>
-		)}
-	</Box>
-);
-
-Summary.propTypes = {
-	isFinished: PropTypes.bool.isRequired,
-	passed: PropTypes.number.isRequired,
-	failed: PropTypes.number.isRequired,
-	time: PropTypes.string.isRequired
-};
-
-const Counter = () => {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-      const interval = setInterval(() => {
-          setCount(count => count + 1);
-      }, 100);
-
-      return () => clearInterval(interval);
-  }, []);
-
-  return <Text>Count: <Color green>{count}</Color></Text>;
-};
-
-render(<Summary isFinished={true} passed={10} failed={1}  time={"1200"} />);
-
 var chokidar = require('chokidar')
 var debounce = require('debounce')
 var shell = require('shelljs')
 
+const RunningSummary = ({path}) => (
+	<Box flexDirection="column" marginTop={1}>
+		<Box>
+			<Box width={15}>
+				<Color bold dim>
+				  Current state:
+				</Color>
+			</Box>
+			<Color bgYellow black> RUNNING </Color>
+		</Box>
+		<Box>
+			<Color dim>Detected change to:</Color> {path}
+		</Box>
+	</Box>
+)
+
+const PassSummary = ({outputText, failureText}) => (
+	<Box flexDirection="column" marginTop={1}>
+		<Box>
+			<Box width={15}>
+			  <Color bold dim>
+					Current state: 
+				</Color>
+			</Box>
+			<Color bgGreen black> PASSED </Color>
+		</Box>
+
+		<Box marginTop={1}>{outputText + failureText}</Box>
+	</Box>
+);
+
+const FailSummary = ({outputText, failureText}) => (
+	<Box flexDirection="column" marginTop={1}>
+		<Box>
+			<Box width={15}>
+			  <Color bold dim>
+					Current state: 
+				</Color>
+			</Box>
+			<Color bgRed black> FAILED </Color>
+		</Box>
+
+		<Box marginTop={1}>{outputText + failureText}</Box>
+	</Box>
+	
+);
+
+var buildAndTestCommand = process.argv.slice(2)[0]
+
 const doSomethingBob = debounce((event, path) => { 
-	var runCommand = shell.exec('ls2', {silent:true})
+	render(<RunningSummary path={path}/>)
+
+	var runCommand = shell.exec(buildAndTestCommand, {silent:true})
+
 	if (runCommand.code !== 0) {
-		render(<div>
-			<Summary isFinished={true} passed={0} failed={1000} time={path} />
-			<Text>{runCommand.stderr}</Text>
-			</div>);
+		render( <FailSummary outputText={runCommand.stdout} failureText={runCommand.stderr} /> );
 	} else {
-		render(<Summary isFinished={true} passed={10} failed={1} time={path} />);
+		render( <PassSummary outputText={runCommand.stdout} failureText={runCommand.stderr} /> );
 	}
 }, 1)
 
-chokidar.watch('.', {ignored: /(^|[\/\\])\../, interval: 100}).on('all', (event, path) => {
+chokidar.watch('.', {ignored: /(^|[\/\\])\../}).on('all', (event, path) => {
   doSomethingBob(event, path);
 });
-
+ 
    
