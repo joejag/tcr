@@ -1,12 +1,13 @@
 {
   "name": "tcr",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "test && commit || revert",
   "bin": {
     "tcr": "index.js"
   },
   "files": [
-    "/lib"
+    "/lib",
+    "index.js"
   ],
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
