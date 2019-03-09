@@ -2,7 +2,9 @@
   "name": "tcr",
   "version": "0.1.0",
   "description": "test && commit || revert",
-  "main": "index.js",
+  "bin": {
+    "tcr": "index.js"
+  },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "chokidar": "^2.1.2",
@@ -33,6 +35,6 @@
       "@babel/preset-react"
     ]
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Joe Wright <joe@joejag.com> (https://github.com/joejag/tcr)",
+  "license": "MIT"
 }
