@@ -1,7 +1,7 @@
 {
-  "name": "tcr-runner",
-  "version": "1.0.0",
-  "description": "",
+  "name": "tcr",
+  "version": "0.1.0",
+  "description": "test && commit || revert",
   "main": "index.js",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
