@@ -8,7 +8,7 @@ const RunningSummary = ({ path }) => (
   <Box flexDirection='column' marginTop={1}>
     <Box>
       <Box width={10}><Color bgYellow black width={10}> RUNNING </Color></Box>
-      <Color dim> from change in </Color> {path}
+      <Color dim> from change in  </Color> {path}
     </Box>
   </Box>
 )
@@ -17,7 +17,7 @@ const PassSummary = ({ path, outputText, failureText }) => (
   <Box flexDirection='column' marginTop={1}>
     <Box>
       <Box width={10}><Color bgGreen black> PASSED </Color></Box>
-      <Color dim> from change in </Color> {path}
+      <Color dim> from change in  </Color> {path}
     </Box>
 
     <Box marginTop={1}>{outputText + failureText}</Box>
@@ -28,7 +28,7 @@ const FailSummary = ({ path, outputText, failureText }) => (
   <Box flexDirection='column' marginTop={1}>
     <Box>
       <Box width={10}><Color bgRed black width={10}> FAILED </Color></Box>
-      <Color dim> from change in </Color> {path}
+      <Color dim> from change in  </Color> {path}
     </Box>
 
     <Box marginTop={1}>{outputText + failureText}</Box>
@@ -47,7 +47,7 @@ const doSomethingBob = debounce((path) => {
   } else {
     render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
   }
-}, 100)
+}, 50)
 
 var watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
 watcher.on('ready', () => {

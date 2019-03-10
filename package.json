@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir=lib",
-    "start": "npm run build && clear && ./index.js 'ruby a.rb'"
+    "start": "npm run build && ./test/setup.sh && npm install -g && cd /tmp/playground && clear && tcr 'ruby example_file.rb'"
   },
   "babel": {
     "presets": [
