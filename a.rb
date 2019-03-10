@@ -1,2 +1,4 @@
-$stderr.puts 'boo2'
-exit 0
+sleep 1
+$stderr.puts 'bad'
+puts 'good'
+exit 1
