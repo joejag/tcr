@@ -14,9 +14,9 @@
     "chokidar": "^2.1.2",
     "debounce": "^1.2.0",
     "ink": "^2.0.5",
-    "nodegit": "^0.24.1",
     "react": "^16.8.4",
-    "shelljs": "^0.8.3"
+    "shelljs": "^0.8.3",
+    "simple-git": "^1.107.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

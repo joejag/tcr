@@ -3,6 +3,7 @@ import { render, Box, Color } from 'ink'
 import chokidar from 'chokidar'
 import debounce from 'debounce'
 import shell from 'shelljs'
+import git from 'simple-git'
 
 const RunningSummary = ({ path }) => (
   <Box flexDirection='column' marginTop={1}>
@@ -42,16 +43,20 @@ const doSomethingBob = debounce((path) => {
 
   var runCommand = shell.exec(buildAndTestCommand, { silent: true })
 
-  if (runCommand.code !== 0) {
-    render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
-  } else {
+  if (runCommand.code === 0) {
+    // commit
     render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
+  } else {
+    // revert
+    render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
   }
+  git('.').status((_, a) => console.log('a', a))
 }, 50)
 
 var watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
 watcher.on('ready', () => {
   doSomethingBob('.')
+  // if it fails here we need to quit out as it's unstable
   watcher.on('all', (_, path) => {
     doSomethingBob(path)
   })
