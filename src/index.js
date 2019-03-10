@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types'
+import React from 'react';
 import {render, Box, Text, Color} from 'ink';
 var chokidar = require('chokidar')
 var debounce = require('debounce')
@@ -8,66 +7,52 @@ var shell = require('shelljs')
 const RunningSummary = ({path}) => (
 	<Box flexDirection="column" marginTop={1}>
 		<Box>
-			<Box width={15}>
-				<Color bold dim>
-				  Current state:
-				</Color>
-			</Box>
-			<Color bgYellow black> RUNNING </Color>
-		</Box>
-		<Box>
-			<Color dim>Detected change to:</Color> {path}
+			<Box width={10}><Color bgYellow black width={10}> RUNNING </Color></Box>
+			<Color dim> from change in </Color> {path}
 		</Box>
 	</Box>
 )
 
-const PassSummary = ({outputText, failureText}) => (
+const PassSummary = ({path, outputText, failureText}) => (
 	<Box flexDirection="column" marginTop={1}>
 		<Box>
-			<Box width={15}>
-			  <Color bold dim>
-					Current state: 
-				</Color>
-			</Box>
-			<Color bgGreen black> PASSED </Color>
+			<Box width={10}><Color bgGreen black> PASSED </Color></Box>
+			<Color dim> from change in </Color> {path}
 		</Box>
 
 		<Box marginTop={1}>{outputText + failureText}</Box>
 	</Box>
 );
 
-const FailSummary = ({outputText, failureText}) => (
+const FailSummary = ({path, outputText, failureText}) => (
 	<Box flexDirection="column" marginTop={1}>
 		<Box>
-			<Box width={15}>
-			  <Color bold dim>
-					Current state: 
-				</Color>
-			</Box>
-			<Color bgRed black> FAILED </Color>
+			<Box width={10}><Color bgRed black width={10}> FAILED </Color></Box>
+			<Color dim> from change in </Color> {path}
 		</Box>
 
 		<Box marginTop={1}>{outputText + failureText}</Box>
 	</Box>
-	
 );
 
 var buildAndTestCommand = process.argv.slice(2)[0]
 
-const doSomethingBob = debounce((event, path) => { 
+const doSomethingBob = debounce((path) => { 
 	render(<RunningSummary path={path}/>)
 
 	var runCommand = shell.exec(buildAndTestCommand, {silent:true})
 
 	if (runCommand.code !== 0) {
-		render( <FailSummary outputText={runCommand.stdout} failureText={runCommand.stderr} /> );
+		render( <FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} /> );
 	} else {
-		render( <PassSummary outputText={runCommand.stdout} failureText={runCommand.stderr} /> );
+		render( <PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} /> );
 	}
-}, 1)
+}, 100)
 
-chokidar.watch('.', {ignored: /(^|[\/\\])\../}).on('all', (event, path) => {
-  doSomethingBob(event, path);
-});
- 
-   
+var watcher = chokidar.watch('.', {ignored: /(^|[\/\\])\../})
+watcher.on('ready', () => {
+	doSomethingBob('.')
+	watcher.on('all', (_, path) => {
+  	doSomethingBob(path);
+	})
+})

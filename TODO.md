@@ -5,3 +5,4 @@
 * Show stats on how many test runs - how many commits and failures
 * Add eslint and prettier stuff
 * Make render async
+* git commit and revert stuff
