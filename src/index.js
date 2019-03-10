@@ -42,8 +42,6 @@ const FailSummary = ({ path, outputText, failureText }) => (
 // idealy proces the whole command, rather than hoping the user surrounds it with quotes
 var buildAndTestCommand = process.argv.slice(2)[0]
 
-// git('.').status((_, a) => console.log('status!', a))
-
 const doSomethingBob = debounce((path) => {
   render(<RunningSummary path={path} />)
 
@@ -59,6 +57,7 @@ const doSomethingBob = debounce((path) => {
 }, 50)
 
 // if git changes already there, fail out, else we'd revert them
+// git('.').status((_, a) => console.log('status!', a))
 
 var watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
 watcher.on('ready', () => {
