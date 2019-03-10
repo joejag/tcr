@@ -36,7 +36,10 @@ const FailSummary = ({ path, outputText, failureText }) => (
   </Box>
 )
 
+// idealy proces the whole command, rather than hoping the user surrounds it with quotes
 var buildAndTestCommand = process.argv.slice(2)[0]
+
+// git('.').status((_, a) => console.log('status!', a))
 
 const doSomethingBob = debounce((path) => {
   render(<RunningSummary path={path} />)
@@ -44,14 +47,15 @@ const doSomethingBob = debounce((path) => {
   var runCommand = shell.exec(buildAndTestCommand, { silent: true })
 
   if (runCommand.code === 0) {
-    // commit
+    git('.').add('./*').commit('first commit!')
     render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
   } else {
-    // revert
+    git('.').reset(['HEAD', '--hard'])
     render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
   }
-  git('.').status((_, a) => console.log('a', a))
 }, 50)
+
+// if git changes already there, fail out, else we'd revert them
 
 var watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
 watcher.on('ready', () => {
