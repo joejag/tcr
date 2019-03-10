@@ -38,7 +38,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir=lib",
-    "start": "node lib/index.js"
+    "start": "npm run build && clear && ./index.js 'ruby a.rb'"
   },
   "babel": {
     "presets": [

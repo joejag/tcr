@@ -1,4 +1,4 @@
 sleep 1
 $stderr.puts 'bad'
 puts 'good'
-exit 1
+exit Random.rand(2)
