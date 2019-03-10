@@ -48,7 +48,7 @@ const doSomethingBob = debounce((path) => {
   var runCommand = shell.exec(buildAndTestCommand, { silent: true })
 
   if (runCommand.code === 0) {
-    git('.').add('./*').commit('first commit!')
+    git('.').add('./*').commit('working')
     render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
   } else {
     git('.').reset(['HEAD', '--hard'])
