@@ -2,7 +2,7 @@
 
 `test && commit || revert` done easy.
 
-![Example Screenshot](./screenshot.png)
+![Example Screenshot](screenshot.png)
 
 Just run `npx tcr 'my test command'` and you are away.
 
