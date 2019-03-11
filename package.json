@@ -39,7 +39,7 @@
   "scripts": {
     "build": "babel src --out-dir=lib",
     "start": "npm run install:local && npm run test:local",
-    "install:local": "npm run build && ./test/setup.sh && npm install -g",
+    "install:local": "npm run build && npm install -g",
     "test:local": "./test/setup.sh && cd /tmp/playground && code ."
   },
   "babel": {

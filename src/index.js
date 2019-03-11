@@ -35,35 +35,46 @@ const FailSummary = ({ path, outputText, failureText }) => (
       <Color dim> last change:  </Color> {path}
     </Box>
 
-    <Box marginTop={1}>{outputText + failureText}</Box>
+    <FailureReason outputText={outputText} failureText={failureText} />
   </Box>
 )
 
-// idealy proces the whole command, rather than hoping the user surrounds it with quotes
-var buildAndTestCommand = process.argv.slice(2)[0]
+const FailureReason = ({ outputText, failureText }) => (
+  <Box marginTop={1}>{outputText + failureText}</Box>
+)
 
-const doSomethingBob = debounce((path) => {
+// TODO: maybe: process all the args to save the user putting thier test command in quotes?
+const buildAndTestCommand = process.argv.slice(2)[0]
+let lastFailure = <div />
+
+const runTCRLoop = debounce((path) => {
   render(<RunningSummary path={path} />)
 
-  var runCommand = shell.exec(buildAndTestCommand, { silent: true })
+  const runCommand = shell.exec(buildAndTestCommand, { silent: true })
 
   if (runCommand.code === 0) {
     git('.').add('./*').commit('working')
-    render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
+    render(<div>
+      <PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />
+      <Color dim>Last failure output:</Color>
+      {lastFailure}
+    </div>)
   } else {
     git('.').reset(['HEAD', '--hard'])
+    lastFailure = <FailureReason outputText={runCommand.stdout} failureText={runCommand.stderr} />
     render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
   }
-}, 50)
+}, 50) // wait 50ms in case multiple files have been saved
 
-// if git changes already there, fail out, else we'd revert them
+// TODO: if git changes present, fail out and warn the user, else we'd revert them
 // git('.').status((_, a) => console.log('status!', a))
 
-var watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
+const watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
 watcher.on('ready', () => {
-  doSomethingBob('.')
-  // if it fails here we need to quit out as it's unstable
+  runTCRLoop('.')
+  // TODO: maybe: if it fails here we need to quit the program as the origanal test run is failing?
+
   watcher.on('all', (_, path) => {
-    doSomethingBob(path)
+    runTCRLoop(path)
   })
 })
