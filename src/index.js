@@ -124,7 +124,20 @@ git('.').silent(true).status((err, statusSummary) => {
   const watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
   watcher.on('ready', () => {
     runTCRLoop('.')
-    // TODO: maybe: if it fails here we need to quit the program as the origanal test run is failing?
+    const runCommand = shell.exec(buildAndTestCommand, { silent: true })
+    if (runCommand.code !== 0) {
+      render(
+        <Box flexDirection='column'>
+          <Box>
+            <Logo />
+            <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+          </Box>
+          <FailureReason outputText={runCommand.stdout} failureText={runCommand.stderr} />
+          <Box marginTop={1} marginBottom={1}> * <Color red>Quitting TCR as tests are already failing! Fix the tests then restart TCR!</Color></Box>
+        </Box>
+      )
+      process.exit(1)
+    }
 
     watcher.on('all', (_, path) => {
       runTCRLoop(path)
