@@ -62,6 +62,7 @@ if (process.argv.length !== 3) {
   </Box>)
   process.exit(1)
 }
+
 const buildAndTestCommand = process.argv.slice(2)[0]
 let ignoreNextRun = false
 
@@ -84,15 +85,35 @@ const runTCRLoop = debounce((path) => {
   }
 }, 50) // wait 50ms in case multiple files have been saved
 
-// TODO: if git changes present, fail out and warn the user, else we'd revert them
-// git('.').status((_, a) => console.log('status!', a))
+git('.').status((err, statusSummary) => {
+  if (err) {
+    render(err)
+    process.exit(1)
+  }
+  if (statusSummary.files.length !== 0) {
+    // const problemFiles = statusSummary.files.map((file) =>
+    //   <Color key={file} red><span> * {file}</span></Color>
+    // )
+    render(
+      <Box flexDirection='column'>
+        <Box>
+          <Logo />
+          <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+        </Box>
+        <Box marginTop={1}>There are files already changed in this repo, please commit them before starting a TCR session</Box>
+        {/* <Box>{problemFiles}</Box> */}
+      </Box>
+    )
+    process.exit(1)
+  }
 
-const watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
-watcher.on('ready', () => {
-  runTCRLoop('.')
-  // TODO: maybe: if it fails here we need to quit the program as the origanal test run is failing?
+  const watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
+  watcher.on('ready', () => {
+    runTCRLoop('.')
+    // TODO: maybe: if it fails here we need to quit the program as the origanal test run is failing?
 
-  watcher.on('all', (_, path) => {
-    runTCRLoop(path)
+    watcher.on('all', (_, path) => {
+      runTCRLoop(path)
+    })
   })
 })
