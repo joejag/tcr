@@ -20,13 +20,20 @@ if (process.argv.length !== 3) {
   quitWithMessage(<NotEnoughArgumentsError />)
 }
 
+// Wait for this long. Required as git reset too quickly and editors ignore the file changes
+const TIME_TO_WAIT_BEFORE_RESETTING = 200
+// Wait for this long. In case multiple files have been saved
+const TIME_TO_WAIT_BEFORE_RUNNING = 50
+
 const buildAndTestCommand = process.argv.slice(2)[0]
 const gitRepo = git('.').silent(true)
-let ignoreNextRun = false
+let gitResetRun = false
+let commitCount = 0
+let revertCount = 0
 
 const runTCRLoop = debounce((path) => {
-  if (ignoreNextRun === true) {
-    ignoreNextRun = false
+  if (gitResetRun === true) {
+    gitResetRun = false
     return
   }
 
@@ -34,26 +41,29 @@ const runTCRLoop = debounce((path) => {
   const runCommand = shell.exec(buildAndTestCommand, { silent: true })
 
   if (runCommand.code === 0) {
-    gitRepo.add('./*').commit('working')
-    render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
+    gitRepo.status((_, statusSummary) => {
+      if (statusSummary.files.length !== 0) {
+        gitRepo.add('./*').commit('working')
+        commitCount++
+      }
+      render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} commitCount={commitCount} revertCount={revertCount} />)
+    })
   } else {
-    render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} />)
-    sleep(200).then(() => {
-      // sleep required as reset too quickly and editors ignore it
-      ignoreNextRun = true
+    sleep(TIME_TO_WAIT_BEFORE_RESETTING).then(() => {
+      gitResetRun = true
+      revertCount++
+      render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} commitCount={commitCount} revertCount={revertCount} />)
       gitRepo.reset(['HEAD', '--hard'])
     })
   }
-}, 50) // wait 50ms in case multiple files have been saved
+}, TIME_TO_WAIT_BEFORE_RUNNING)
 
 gitRepo.status((err, statusSummary) => {
   if (err) {
-    render(<NoGitRepoError err={err} />)
-    process.exit(1)
+    quitWithMessage(<NoGitRepoError err={err} />)
   }
   if (statusSummary.files.length !== 0) {
-    render(<UncommitedFilesGitError statusSummary={statusSummary} />)
-    process.exit(1)
+    quitWithMessage(<UncommitedFilesGitError statusSummary={statusSummary} />)
   }
 
   const watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
@@ -62,10 +72,9 @@ gitRepo.status((err, statusSummary) => {
     render(<RunningSummary path='.' />)
     const runCommand = shell.exec(buildAndTestCommand, { silent: true })
     if (runCommand.code === 0) {
-      render(<PassSummary path='.' outputText={runCommand.stdout} failureText={runCommand.stderr} />)
+      render(<PassSummary path='.' outputText={runCommand.stdout} failureText={runCommand.stderr} commitCount={commitCount} revertCount={revertCount} />)
     } else {
-      render(<TestFailingBeforeWeStartError outputText={runCommand.stdout} failureText={runCommand.stderr} />)
-      process.exit(1)
+      quitWithMessage(<TestFailingBeforeWeStartError outputText={runCommand.stdout} failureText={runCommand.stderr} />)
     }
 
     watcher.on('all', (_, path) => {

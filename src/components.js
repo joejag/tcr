@@ -11,31 +11,46 @@ export const LastChange = ({ path }) => (
   </Box>
 )
 
-export const RunningSummary = ({ path }) => (
-  <Box>
-    <Logo />
-    <Box width={10}><Color bgYellow black width={10}> RUNNING </Color></Box><LastChange path={path} />
-  </Box>
+export const Stats = ({ commitCount, revertCount }) => (
+  <Box> <Color dim>{commitCount} commits, {revertCount} reverts </Color></Box>
 )
 
-export const PassSummary = ({ path, outputText, failureText }) => (
+export const RunningSummary = ({ path }) => (
   <Box flexDirection='column'>
-    <Logo marginTop={1} />
-    <Box marginTop={1}>{outputText + failureText}</Box>
+    <Box marginTop={1}>
+      <Logo /> <LastChange path={path} />
+    </Box>
     <Box marginTop={1}>
       <Logo />
-      <Box width={10}><Color bgGreen black> PASSED </Color></Box><LastChange path={path} />
+      <Color bgYellow black> RUNNING </Color>
     </Box>
   </Box>
 )
 
-export const FailSummary = ({ path, outputText, failureText }) => (
+export const PassSummary = ({ path, outputText, failureText, commitCount, revertCount }) => (
   <Box flexDirection='column'>
-    <Logo marginTop={1} />
+    <Box marginTop={1}>
+      <Logo /> <LastChange path={path} />
+    </Box>
+    <Box marginTop={1}>{outputText + failureText}</Box>
+    <Box marginTop={1}>
+      <Logo />
+      <Color bgGreen black> PASSED </Color>
+      <Stats commitCount={commitCount} revertCount={revertCount} />
+    </Box>
+  </Box>
+)
+
+export const FailSummary = ({ path, outputText, failureText, commitCount, revertCount }) => (
+  <Box flexDirection='column'>
+    <Box marginTop={1}>
+      <Logo /> <LastChange path={path} />
+    </Box>
     <FailureReason outputText={outputText} failureText={failureText} />
     <Box marginTop={1}>
       <Logo />
-      <Box width={10}><Color bgRed black width={10}> FAILED </Color></Box><LastChange path={path} />
+      <Color bgRed black> FAILED </Color>
+      <Stats commitCount={commitCount} revertCount={revertCount} />
     </Box>
   </Box>
 )
@@ -48,7 +63,7 @@ export const NotEnoughArgumentsError = () => (
   <Box flexDirection='column' marginBottom={1}>
     <Box>
       <Logo />
-      <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+      <Color bgRed black> PROBLEM </Color>
     </Box>
     <Box marginTop={1}>Please specify one argument to use to test your program!</Box>
     <Box>For example: `tcr "./gradlew test"`</Box>
@@ -59,7 +74,7 @@ export const NoGitRepoError = ({ err }) => (
   <Box flexDirection='column'>
     <Box>
       <Logo />
-      <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+      <Color bgRed black> PROBLEM </Color>
     </Box>
     <Box marginTop={1}>Is this a valid Git repo? TCR needs one to start. Try `git init`</Box>
     <Box marginTop={1}>{err}</Box>
@@ -73,7 +88,7 @@ export const UncommitedFilesGitError = ({ statusSummary }) => {
   return (<Box flexDirection='column' marginBottom={1}>
     <Box>
       <Logo />
-      <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+      <Color bgRed black> PROBLEM </Color>
     </Box>
     <Box marginTop={1}>There are files already changed in this repo, please commit them before starting a TCR session</Box>
     {<Box flexDirection='column' marginTop={1}>{problemFiles}</Box>}
@@ -84,7 +99,7 @@ export const TestFailingBeforeWeStartError = ({ outputText, failureText }) => (
   <Box flexDirection='column' marginBottom={1}>
     <Box>
       <Logo />
-      <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+      <Color bgRed black> PROBLEM </Color>
     </Box>
     <FailureReason outputText={outputText} failureText={failureText} />
     <Box marginTop={1}> * <Color red>Quitting TCR as tests are already failing! Fix the tests then restart TCR</Color></Box>
