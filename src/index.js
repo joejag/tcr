@@ -51,7 +51,17 @@ const FailureReason = ({ outputText, failureText }) => (
   <Box>{outputText + failureText}</Box>
 )
 
-// TODO: maybe: process all the args to save the user putting thier test command in quotes?
+if (process.argv.length !== 3) {
+  render(<Box flexDirection='column'>
+    <Box>
+      <Logo />
+      <Box width={10}><Color bgRed black width={10}> PROBLEM </Color></Box>
+    </Box>
+    <Box marginTop={1}>Please specify one argument to use to test your program!</Box>
+    <Box>For example: `tcr "./gradlew test"`</Box>
+  </Box>)
+  process.exit(1)
+}
 const buildAndTestCommand = process.argv.slice(2)[0]
 let ignoreNextRun = false
 
