@@ -6,7 +6,7 @@ import shell from 'shelljs'
 import git from 'simple-git'
 
 const Logo = () => (
-  <Box> TCR </Box>
+  <Box><Color black bgWhite> TCR </Color></Box>
 )
 
 const LastChange = ({ path }) => (
