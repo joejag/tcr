@@ -11,9 +11,13 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-if (process.argv.length !== 3) {
-  render(<NotEnoughArgumentsError />)
+const quitWithMessage = (message) => {
+  render(message)
   process.exit(1)
+}
+
+if (process.argv.length !== 3) {
+  quitWithMessage(<NotEnoughArgumentsError />)
 }
 
 const buildAndTestCommand = process.argv.slice(2)[0]
@@ -42,7 +46,7 @@ const runTCRLoop = debounce((path) => {
   }
 }, 50) // wait 50ms in case multiple files have been saved
 
-gitRepo.silent(true).status((err, statusSummary) => {
+gitRepo.status((err, statusSummary) => {
   if (err) {
     render(<NoGitRepoError err={err} />)
     process.exit(1)
@@ -54,10 +58,13 @@ gitRepo.silent(true).status((err, statusSummary) => {
 
   const watcher = chokidar.watch('.', { ignored: /(^|[\\])\../ })
   watcher.on('ready', () => {
-    runTCRLoop('.')
+    // Checking things are ok before we start looping
+    render(<RunningSummary path='.' />)
     const runCommand = shell.exec(buildAndTestCommand, { silent: true })
-    if (runCommand.code !== 0) {
-      render(<TestFailingBeforeWeStartError runCommand={runCommand} />)
+    if (runCommand.code === 0) {
+      render(<PassSummary path='.' outputText={runCommand.stdout} failureText={runCommand.stderr} />)
+    } else {
+      render(<TestFailingBeforeWeStartError outputText={runCommand.stdout} failureText={runCommand.stderr} />)
       process.exit(1)
     }
 
