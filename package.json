@@ -1,6 +1,6 @@
 {
   "name": "tcr",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "test && commit || revert",
   "bin": {
     "tcr": "index.js"
