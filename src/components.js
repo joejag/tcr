@@ -15,11 +15,12 @@ export const Stats = ({ commitCount, revertCount }) => (
   <Box> <Color dim>{commitCount} commits, {revertCount} reverts </Color></Box>
 )
 
-export const RunningSummary = ({ path }) => (
+export const RunningSummary = ({ path, data = '' }) => (
   <Box flexDirection='column'>
     <Box marginTop={1}>
       <Logo /> <LastChange path={path} />
     </Box>
+    <Box marginTop={1}>{data}</Box>
     <Box marginTop={1}>
       <Logo />
       <Color bgYellow black> RUNNING </Color>

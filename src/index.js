@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from 'ink'
+import { render, Box } from 'ink'
 import chokidar from 'chokidar'
 import debounce from 'debounce'
 import shell from 'shelljs'
@@ -28,34 +28,50 @@ const TIME_TO_WAIT_BEFORE_RUNNING = 50
 const buildAndTestCommand = process.argv.slice(2)[0]
 const gitRepo = git('.').silent(true)
 let gitResetRun = false
+let alreadyRunning = false // prevent running twice
 let commitCount = 0
 let revertCount = 0
 
 const runTCRLoop = debounce((path) => {
+  if (alreadyRunning === true) {
+    return
+  }
+  alreadyRunning = true
+
   if (gitResetRun === true) {
     gitResetRun = false
     return
   }
 
-  render(<RunningSummary path={path} />)
-  const runCommand = shell.exec(buildAndTestCommand, { silent: true })
+  var child = shell.exec(buildAndTestCommand, { async: true, silent: true }, (code, stdout, stderr) => {
+    alreadyRunning = false
+    if (code === 0) {
+      gitRepo.status((_, statusSummary) => {
+        if (statusSummary.files.length !== 0) {
+          gitRepo.add('./*').commit('working')
+          commitCount++
+        }
+        render(<PassSummary path={path} outputText={stdout} failureText={stderr} commitCount={commitCount} revertCount={revertCount} />)
+      })
+    } else {
+      sleep(TIME_TO_WAIT_BEFORE_RESETTING).then(() => {
+        gitResetRun = true
+        revertCount++
+        render(<FailSummary path={path} outputText={stdout} failureText={stderr} commitCount={commitCount} revertCount={revertCount} />)
+        gitRepo.reset(['HEAD', '--hard'])
+      })
+    }
+  })
 
-  if (runCommand.code === 0) {
-    gitRepo.status((_, statusSummary) => {
-      if (statusSummary.files.length !== 0) {
-        gitRepo.add('./*').commit('working')
-        commitCount++
-      }
-      render(<PassSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} commitCount={commitCount} revertCount={revertCount} />)
-    })
-  } else {
-    sleep(TIME_TO_WAIT_BEFORE_RESETTING).then(() => {
-      gitResetRun = true
-      revertCount++
-      render(<FailSummary path={path} outputText={runCommand.stdout} failureText={runCommand.stderr} commitCount={commitCount} revertCount={revertCount} />)
-      gitRepo.reset(['HEAD', '--hard'])
-    })
-  }
+  let sharedOut = ''
+  child.stdout.on('data', function (data) {
+    sharedOut = sharedOut + data
+    render(<RunningSummary path={path} data={sharedOut} />)
+  })
+  child.stderr.on('data', function (data) {
+    sharedOut = sharedOut + data
+    render(<RunningSummary path={path} data={sharedOut} />)
+  })
 }, TIME_TO_WAIT_BEFORE_RUNNING)
 
 gitRepo.status((err, statusSummary) => {
