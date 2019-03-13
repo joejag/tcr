@@ -12,7 +12,7 @@ export const LastChange = ({ path }) => (
 )
 
 export const Stats = ({ commitCount, revertCount }) => (
-  <Box> <Color dim>{commitCount} commits, {revertCount} reverts </Color></Box>
+  <Box> <Color dim>{commitCount} commits, {revertCount} resets </Color></Box>
 )
 
 export const RunningSummary = ({ path, outputText }) => (
