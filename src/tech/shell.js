@@ -1,5 +1,4 @@
 import shell from 'shelljs'
-import chokidar from 'chokidar'
 
 let alreadyRunning = false
 
@@ -27,20 +26,5 @@ export const exec = (command, { onPass, onFail, onProgress }) => {
   child.stderr.on('data', function (data) {
     sharedOut = sharedOut + data
     onProgress(sharedOut)
-  })
-}
-
-export const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
-export const watch = (directory, { onReady, onUpdate }) => {
-  const watcher = chokidar.watch(directory, { ignored: /(^|[\\])\../ })
-  watcher.on('ready', () => {
-    onReady()
-
-    watcher.on('all', (_, path) => {
-      onUpdate(path)
-    })
   })
 }

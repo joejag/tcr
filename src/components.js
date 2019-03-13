@@ -11,8 +11,8 @@ export const LastChange = ({ path }) => (
   </Box>
 )
 
-export const Stats = ({ commitCount, revertCount }) => (
-  <Box> <Color dim>{commitCount} commits, {revertCount} resets </Color></Box>
+export const Stats = ({ stats }) => (
+  <Box> <Color dim>{stats.commitCount} commits, {stats.resetCount} resets </Color></Box>
 )
 
 export const RunningSummary = ({ path, outputText }) => (
@@ -28,7 +28,7 @@ export const RunningSummary = ({ path, outputText }) => (
   </Box>
 )
 
-export const PassSummary = ({ path, outputText, commitCount, revertCount }) => (
+export const PassSummary = ({ path, outputText, stats }) => (
   <Box flexDirection='column'>
     <Box marginTop={1}>
       <Logo /> <LastChange path={path} />
@@ -37,12 +37,12 @@ export const PassSummary = ({ path, outputText, commitCount, revertCount }) => (
     <Box marginTop={1}>
       <Logo />
       <Color bgGreen black> PASSED </Color>
-      <Stats commitCount={commitCount} revertCount={revertCount} />
+      <Stats stats={stats} />
     </Box>
   </Box>
 )
 
-export const FailSummary = ({ path, outputText, commitCount, revertCount }) => (
+export const FailSummary = ({ path, outputText, stats }) => (
   <Box flexDirection='column'>
     <Box marginTop={1}>
       <Logo /> <LastChange path={path} />
@@ -51,7 +51,7 @@ export const FailSummary = ({ path, outputText, commitCount, revertCount }) => (
     <Box marginTop={1}>
       <Logo />
       <Color bgRed black> FAILED </Color>
-      <Stats commitCount={commitCount} revertCount={revertCount} />
+      <Stats stats={stats} />
     </Box>
   </Box>
 )
@@ -78,8 +78,8 @@ export const NoGitRepoError = ({ err }) => (
   </Box>
 )
 
-export const UncommitedFilesGitError = ({ statusSummary }) => {
-  const problemFiles = statusSummary.files.map((file) =>
+export const UncommitedFilesGitError = ({ changedFiles }) => {
+  const problemFiles = changedFiles.map((file) =>
     <Box key={file.path}> * <Color red>{file.path}</Color></Box>)
 
   return (<Box flexDirection='column' marginBottom={1}>

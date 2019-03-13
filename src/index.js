@@ -1,8 +1,10 @@
 import React from 'react'
 import { render } from 'ink'
-import git from 'simple-git'
 
-import { exec, sleep, watch } from './util'
+import { exec } from './tech/shell'
+import { watch } from './tech/watch'
+import { sleep } from './tech/sleep'
+import { gitStatus, gitCommit, gitReset, gitStats } from './tech/git'
 import { NoGitRepoError, NotEnoughArgumentsError, RunningSummary, PassSummary, FailSummary, TestFailingBeforeWeStartError, UncommitedFilesGitError } from './components'
 
 if (process.argv.length !== 3) {
@@ -15,7 +17,7 @@ const buildAndTestCommand = process.argv.slice(2)[0]
 const preflightTCRLoop = () => {
   exec(buildAndTestCommand, {
     onPass: (output) => {
-      render(<PassSummary path={'.'} outputText={output} commitCount={0} revertCount={0} />)
+      render(<PassSummary path={'.'} outputText={output} stats={gitStats()} />)
     },
     onFail: (output) => {
       render(<TestFailingBeforeWeStartError outputText={output} />)
@@ -28,9 +30,6 @@ const preflightTCRLoop = () => {
 }
 
 const TIME_TO_WAIT_BEFORE_RESETTING = 100 // Required if git reset is too quick and editors ignore the file changes
-const gitRepo = git('.').silent(true)
-let commitCount = 0
-let revertCount = 0
 let gitResetRun = false
 
 const repeatableTCRLoop = (path) => {
@@ -41,20 +40,15 @@ const repeatableTCRLoop = (path) => {
 
   exec(buildAndTestCommand, {
     onPass: (output) => {
-      gitRepo.status((_, statusSummary) => {
-        if (statusSummary.files.length !== 0) {
-          gitRepo.add('./*').commit('working')
-          commitCount++
-        }
-        render(<PassSummary path={path} outputText={output} commitCount={commitCount} revertCount={revertCount} />)
+      gitCommit('working', () => {
+        render(<PassSummary path={path} outputText={output} stats={gitStats()} />)
       })
     },
     onFail: (output) => {
       sleep(TIME_TO_WAIT_BEFORE_RESETTING).then(() => {
         gitResetRun = true
-        gitRepo.reset(['HEAD', '--hard'])
-        revertCount++
-        render(<FailSummary path={path} outputText={output} commitCount={commitCount} revertCount={revertCount} />)
+        gitReset()
+        render(<FailSummary path={path} outputText={output} stats={gitStats()} />)
       })
     },
     onProgress: (output) => {
@@ -68,13 +62,13 @@ const repeatableTCRLoopWithWait = (path) => {
   sleep(TIME_TO_WAIT_BEFORE_RUNNING).then(() => repeatableTCRLoop(path))
 }
 
-gitRepo.status((err, statusSummary) => {
+gitStatus((err, changedFiles) => {
   if (err) {
     render(<NoGitRepoError err={err} />)
     process.exit(1)
   }
-  if (statusSummary.files.length !== 0) {
-    render(<UncommitedFilesGitError statusSummary={statusSummary} />)
+  if (changedFiles.length !== 0) {
+    render(<UncommitedFilesGitError changedFiles={changedFiles} />)
     process.exit(1)
   }
 
