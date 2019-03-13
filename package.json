@@ -12,7 +12,6 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "chokidar": "^2.1.2",
-    "debounce": "^1.2.0",
     "ink": "^2.0.5",
     "react": "^16.8.4",
     "shelljs": "^0.8.3",

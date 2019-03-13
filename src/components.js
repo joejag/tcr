@@ -15,12 +15,12 @@ export const Stats = ({ commitCount, revertCount }) => (
   <Box> <Color dim>{commitCount} commits, {revertCount} reverts </Color></Box>
 )
 
-export const RunningSummary = ({ path, data = '' }) => (
+export const RunningSummary = ({ path, outputText }) => (
   <Box flexDirection='column'>
     <Box marginTop={1}>
       <Logo /> <LastChange path={path} />
     </Box>
-    <Box marginTop={1}>{data}</Box>
+    <Box marginTop={1}>{outputText}</Box>
     <Box marginTop={1}>
       <Logo />
       <Color bgYellow black> RUNNING </Color>
@@ -28,12 +28,12 @@ export const RunningSummary = ({ path, data = '' }) => (
   </Box>
 )
 
-export const PassSummary = ({ path, outputText, failureText, commitCount, revertCount }) => (
+export const PassSummary = ({ path, outputText, commitCount, revertCount }) => (
   <Box flexDirection='column'>
     <Box marginTop={1}>
       <Logo /> <LastChange path={path} />
     </Box>
-    <Box marginTop={1}>{outputText + failureText}</Box>
+    <Box marginTop={1}>{outputText}</Box>
     <Box marginTop={1}>
       <Logo />
       <Color bgGreen black> PASSED </Color>
@@ -42,22 +42,18 @@ export const PassSummary = ({ path, outputText, failureText, commitCount, revert
   </Box>
 )
 
-export const FailSummary = ({ path, outputText, failureText, commitCount, revertCount }) => (
+export const FailSummary = ({ path, outputText, commitCount, revertCount }) => (
   <Box flexDirection='column'>
     <Box marginTop={1}>
       <Logo /> <LastChange path={path} />
     </Box>
-    <FailureReason outputText={outputText} failureText={failureText} />
+    <Box marginTop={1}>{outputText}</Box>
     <Box marginTop={1}>
       <Logo />
       <Color bgRed black> FAILED </Color>
       <Stats commitCount={commitCount} revertCount={revertCount} />
     </Box>
   </Box>
-)
-
-export const FailureReason = ({ outputText, failureText }) => (
-  <Box>{outputText + failureText}</Box>
 )
 
 export const NotEnoughArgumentsError = () => (
@@ -96,13 +92,13 @@ export const UncommitedFilesGitError = ({ statusSummary }) => {
   </Box>)
 }
 
-export const TestFailingBeforeWeStartError = ({ outputText, failureText }) => (
+export const TestFailingBeforeWeStartError = ({ outputText }) => (
   <Box flexDirection='column' marginBottom={1}>
     <Box>
       <Logo />
       <Color bgRed black> PROBLEM </Color>
     </Box>
-    <FailureReason outputText={outputText} failureText={failureText} />
+    <Box marginTop={1}>{outputText}</Box>
     <Box marginTop={1}> * <Color red>Quitting TCR as tests are already failing! Fix the tests then restart TCR</Color></Box>
   </Box>
 )
