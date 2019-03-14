@@ -33,7 +33,7 @@ const TIME_TO_WAIT_BEFORE_RESETTING = 100 // Required if git reset is too quick 
 let gitResetRun = false
 
 const repeatableTCRLoop = (path) => {
-  if (gitResetRun === true) {
+  if (gitResetRun === true) { // ignore the run immediately after a reset, so the user can read the failure message
     gitResetRun = false
     return
   }
