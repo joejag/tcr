@@ -1,4 +1,6 @@
 import chokidar from 'chokidar'
+import ignore from 'ignore'
+import { gitIgnoring } from './git'
 
 export const watch = (directory, { onReady, onUpdate }) => {
   const watcher = chokidar.watch(directory, { ignored: /(^|[\\])\../ })
@@ -6,7 +8,10 @@ export const watch = (directory, { onReady, onUpdate }) => {
     onReady()
 
     watcher.on('all', (_, path) => {
-      onUpdate(path)
+      const ig = ignore().add(gitIgnoring())
+      if (!ig.ignores(path)) {
+        onUpdate(path)
+      }
     })
   })
 }

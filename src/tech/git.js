@@ -1,8 +1,17 @@
 import git from 'simple-git'
+import fs from 'fs'
+import parse from 'parse-gitignore'
 
 const gitRepo = git('.').silent(true)
 let commitCount = 0
 let resetCount = 0
+
+export const gitIgnoring = () => {
+  if (fs.existsSync('.gitignore')) {
+    return parse(fs.readFileSync('.gitignore'))
+  }
+  return []
+}
 
 export const gitStatus = (callback) => {
   gitRepo.status((err, statusSummary) => {
