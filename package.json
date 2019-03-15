@@ -13,6 +13,7 @@
     "@babel/polyfill": "^7.2.5",
     "chokidar": "^2.1.2",
     "ink": "^2.0.5",
+    "parse-gitignore": "^1.0.1",
     "react": "^16.8.4",
     "shelljs": "^0.8.3",
     "simple-git": "^1.107.0"
