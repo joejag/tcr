@@ -1,0 +1,23 @@
+{
+  "projectName": "tcr",
+  "projectOwner": "joejag",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "joejag",
+      "name": "Joe Wright",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/57625?v=4",
+      "profile": "http://code.joejag.com",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
