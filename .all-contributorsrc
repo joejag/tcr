@@ -17,6 +17,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "kentbeck",
+      "name": "Kent Beck",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/46154?v=4",
+      "profile": "http://www.kentbeck.com",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7
