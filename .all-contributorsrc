@@ -26,6 +26,16 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "tom-010",
+      "name": "Thomas Deniffel",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/4200484?v=4",
+      "profile": "http://www.skytala-gmbh.com",
+      "contributions": [
+        "blog",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7
