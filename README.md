@@ -1,8 +1,8 @@
 # TCR
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/standard/standard) 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](./CONTRIBUTORS.md)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](https://github.com/standard/standard) 
 
 TCR lets you instantly use the `test && commit || revert` method of software development on your project. TCR watches your files, and when you save any file, the tests are run, if they pass the change is committed if it fails the code is reverted.
 
