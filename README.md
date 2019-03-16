@@ -1,4 +1,5 @@
 # TCR
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](./CONTRIBUTORS.md)
@@ -43,3 +44,14 @@ Feel free to send feedback on [Twitter](https://twitter.com/joe_jag) or [file an
 ## Further Reading
 
 Kent Beck created this method in September 2018. [He wrote the original article on Medium](https://medium.com/@kentbeck_7670/test-commit-revert-870bbd756864)
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="http://code.joejag.com"><img src="https://avatars1.githubusercontent.com/u/57625?v=4" width="100px;" alt="Joe Wright"/><br /><sub><b>Joe Wright</b></sub></a><br /><a href="https://github.com/joejag/tcr/commits?author=joejag" title="Code">💻</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
