@@ -1,5 +1,5 @@
 # TCR
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](./CONTRIBUTORS.md)
@@ -50,7 +50,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table><tr><td align="center"><a href="http://code.joejag.com"><img src="https://avatars1.githubusercontent.com/u/57625?v=4" width="100px;" alt="Joe Wright"/><br /><sub><b>Joe Wright</b></sub></a><br /><a href="https://github.com/joejag/tcr/commits?author=joejag" title="Code">💻</a></td><td align="center"><a href="http://www.kentbeck.com"><img src="https://avatars2.githubusercontent.com/u/46154?v=4" width="100px;" alt="Kent Beck"/><br /><sub><b>Kent Beck</b></sub></a><br /><a href="#ideas-kentbeck" title="Ideas, Planning, & Feedback">🤔</a></td></tr></table>
+<table><tr><td align="center"><a href="http://code.joejag.com"><img src="https://avatars1.githubusercontent.com/u/57625?v=4" width="100px;" alt="Joe Wright"/><br /><sub><b>Joe Wright</b></sub></a><br /><a href="https://github.com/joejag/tcr/commits?author=joejag" title="Code">💻</a></td><td align="center"><a href="http://www.kentbeck.com"><img src="https://avatars2.githubusercontent.com/u/46154?v=4" width="100px;" alt="Kent Beck"/><br /><sub><b>Kent Beck</b></sub></a><br /><a href="#ideas-kentbeck" title="Ideas, Planning, & Feedback">🤔</a></td><td align="center"><a href="http://www.skytala-gmbh.com"><img src="https://avatars2.githubusercontent.com/u/4200484?v=4" width="100px;" alt="Thomas Deniffel"/><br /><sub><b>Thomas Deniffel</b></sub></a><br /><a href="#blog-tom-010" title="Blogposts">📝</a> <a href="#example-tom-010" title="Examples">💡</a></td></tr></table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
