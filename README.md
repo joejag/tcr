@@ -34,7 +34,7 @@ VS Code|:white_check_mark:|You may have to disable some plugins like Prettier wh
 Atom|:white_check_mark:|
 Sublime Text|:white_check_mark:|
 Vim|:white_check_mark:|You need to install the [`autoread` bundle](https://github.com/djoshea/vim-autoread) to get reloading to work without a prompt
-IntelliJ suite|:x:|There is already a plugin for you here by Dmitry Kandalov called [limited wip](https://github.com/dkandalov/limited-wip)
+IntelliJ suite|:x:|IntelliJ doesn't like external apps changing things, instead use the [limited wip](https://github.com/dkandalov/limited-wip) plugin by Dmitry Kandalov 
 
 If you can try any other editors, then please update this section! [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
