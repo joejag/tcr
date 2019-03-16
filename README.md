@@ -13,7 +13,7 @@ TCR helps you think of the smallest possible changes you can make, without ever 
 
 ## Usage
 
-TCR runs on Windows, Linux and Mac. Just run `npx tcr 'my test command'` and you will be up and running.
+TCR runs on Windows, Linux and Mac. First install [node](https://nodejs.org/en/download/), then run `npx tcr 'my test command'` and you will be up and running.
 
 ## Features
 
