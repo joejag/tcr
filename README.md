@@ -31,8 +31,10 @@ TCR is reliant on editors respecting changes on disk.
 Editor|Supported?|Notes
 -|-|-
 VS Code|Yes|You may have to disable some plugins like Prettier which interfere with listening to changes
-IntelliJ suite|No|There is already a plugin for you here by Dmitry Kandalov called [limited wip](https://github.com/dkandalov/limited-wip)
+Atom|Yes|
+Sublime Text|Yes|
 Vim|Yes|You need to install an [`autoread` bundle](https://github.com/djoshea/vim-autoread/blob/master/plugin/autoread.vim) to get reloading to work without a prompt
+IntelliJ suite|No|There is already a plugin for you here by Dmitry Kandalov called [limited wip](https://github.com/dkandalov/limited-wip)
 
 If you can try any other editors, then please update this section! [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
