@@ -5,7 +5,7 @@ import { exec } from './tech/shell'
 import { watch } from './tech/watch'
 import { sleep } from './tech/sleep'
 import { gitStatus, gitCommit, gitReset, gitStats } from './tech/git'
-import { NoGitRepoError, NotEnoughArgumentsError, RunningSummary, PassSummary, FailSummary, TestFailingBeforeWeStartError, UncommitedFilesGitError } from './components'
+import { NoGitRepoError, RunningSummary, PassSummary, FailSummary, TestFailingBeforeWeStartError, UncommitedFilesGitError } from './components'
 
 const preflightTCRLoop = (buildAndTestCommand) => {
   exec(buildAndTestCommand, {
