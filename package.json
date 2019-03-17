@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "chokidar": "^2.1.2",
+    "fs-extra": "^7.0.1",
     "ignore": "^5.0.5",
     "ink": "^2.0.5",
     "parse-gitignore": "^1.0.1",
