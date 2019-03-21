@@ -5,7 +5,7 @@ import { runTcr } from './tcr'
 import { NotEnoughArgumentsError } from './components'
 import { exec } from './tech/shell'
 
-const availableLanguages = ['csharp', 'java', 'node', 'python', 'ruby']
+const availableLanguages = ['csharp', 'java', 'node', 'python', 'ruby', 'go']
 
 if (process.argv.length === 3 && process.argv.slice(2)[0].startsWith('--')) {
   const language = process.argv.slice(2)[0].replace('--', '')
